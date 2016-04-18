@@ -11,8 +11,12 @@ var botConnectorOptions = {
 var bot = new builder.BotConnectorBot(botConnectorOptions);
 bot.add('/', function (session) {
     
-    //respond with user's message
-    session.send("You said " + session.message.text);
+    if(session.message.text.indexOf("/roll") > -1){
+    	session.send("result is : " + random());
+    } else {
+   	 //respond with user's message
+    	session.send("You said " + session.message.text);
+	}
 });
 
 // Setup Restify Server

@@ -1,5 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+var builder2 = require('botbuilder');
 
 // Get secrets from server environment
 var botConnectorOptions = { 
@@ -48,16 +49,16 @@ var luisBotConnectorOptions = {
 
 
 var model = 'https://api.projectoxford.ai/luis/v1/application?id=c413b2ef-382c-45bd-8ff0-f76d60e2a821&subscription-key=c56a0aa53db7476b870b97d40107782f&q='
-var dialog = new builder.LuisDialog(model);
-var luis = new builder.BotConnectorBot(luisBotConnectorOptions);
+var dialog = new builder2.LuisDialog(model);
+var luis = new builder2.BotConnectorBot(luisBotConnectorOptions);
 luis.add('/', dialog);
 
 // Add intent handlers
 dialog.on('builtin.intent.alarm.set_alarm', [
     function (session, args, next) {
         // Resolve and store any entities passed from LUIS.
-        var title = builder.EntityRecognizer.findEntity(args.entities, 'builtin.alarm.title');
-        var time = builder.EntityRecognizer.resolveTime(args.entities);
+        var title = builder2.EntityRecognizer.findEntity(args.entities, 'builtin.alarm.title');
+        var time = builder2.EntityRecognizer.resolveTime(args.entities);
         var alarm = session.dialogData.alarm = {
           title: title ? title.entity : null,
           timestamp: time ? time.getTime() : null  
@@ -65,7 +66,7 @@ dialog.on('builtin.intent.alarm.set_alarm', [
         
         // Prompt for title
         if (!alarm.title) {
-            builder.Prompts.text(session, 'What would you like to call your alarm?');
+            builder2.Prompts.text(session, 'What would you like to call your alarm?');
         } else {
             next();
         }
@@ -78,7 +79,7 @@ dialog.on('builtin.intent.alarm.set_alarm', [
         
         // Prompt for time (title will be blank if the user said cancel)
         if (alarm.title && !alarm.timestamp) {
-            builder.Prompts.time(session, 'What time would you like to set the alarm for?');
+            builder2.Prompts.time(session, 'What time would you like to set the alarm for?');
         } else {
             next();
         }
@@ -86,7 +87,7 @@ dialog.on('builtin.intent.alarm.set_alarm', [
     function (session, results) {
         var alarm = session.dialogData.alarm;
         if (results.response) {
-            var time = builder.EntityRecognizer.resolveTime([results.response]);
+            var time = builder2.EntityRecognizer.resolveTime([results.response]);
             alarm.timestamp = time ? time.getTime() : null;
         }
         
@@ -114,15 +115,15 @@ dialog.on('builtin.intent.alarm.delete_alarm', [
     function (session, args, next) {
         // Resolve entities passed from LUIS.
         var title;
-        var entity = builder.EntityRecognizer.findEntity(args.entities, 'builtin.alarm.title');
+        var entity = builder2.EntityRecognizer.findEntity(args.entities, 'builtin.alarm.title');
         if (entity) {
             // Verify its in our set of alarms.
-            title = builder.EntityRecognizer.findBestMatch(alarms, entity.entity);
+            title = builder2.EntityRecognizer.findBestMatch(alarms, entity.entity);
         }
         
         // Prompt for alarm name
         if (!title) {
-            builder.Prompts.choice(session, 'Which alarm would you like to delete?', alarms);
+            builder2.Prompts.choice(session, 'Which alarm would you like to delete?', alarms);
         } else {
             next({ response: title });
         }
@@ -138,7 +139,7 @@ dialog.on('builtin.intent.alarm.delete_alarm', [
     }
 ]);
 
-dialog.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I can only create & delete alarms. And I can only understand English!"))
+dialog.onDefault(builder2.DialogAction.send("I'm sorry I didn't understand. I can only create & delete alarms. And I can only understand English!"))
 
 
 // Setup Restify Server

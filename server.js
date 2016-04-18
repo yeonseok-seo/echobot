@@ -32,7 +32,7 @@ bot.add('/profile', [
 	},
 	function (session, result){
 		session.userData.name = result.response;
-		builder.Prompts.text(session, "안녕하세요, %s님!", result.response);
+		builder.Prompts.text(session, "안녕하세요, " + reuslt.response + "님!");
 		session.endDialog();
 	}
 ]);

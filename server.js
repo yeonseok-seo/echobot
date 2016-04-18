@@ -21,7 +21,7 @@ bot.add('/', function (session) {
 	    	session.send("%s님, 랜덤값은 %d입니다.", session.userData.name, num);
 	    } else {
 	   	 //respond with user's message
-	    	session.send("%s님이 %s라고 하셨어요!", session.userData.name, session.message.text);
+	    	session.send("%s님이 '%s'라고 하셨어요!", session.userData.name, session.message.text);
 		}
 	}
 });

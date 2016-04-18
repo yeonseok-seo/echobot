@@ -10,18 +10,32 @@ var botConnectorOptions = {
 // Create bot
 var bot = new builder.BotConnectorBot(botConnectorOptions);
 bot.add('/', function (session) {
-    
-    if(session.message.text.indexOf("/roll") > -1){
-    	var min = 0;
-    	var max = 100;
-		var num = Math.floor(min + (1 + max - min)*Math.random());
+	if(!session.userData.name){
+		session.beginDialog('/profile');
+	} else {    
+	    if(session.message.text.indexOf("/roll") > -1){
+	    	var min = 0;
+	    	var max = 100;
+			var num = Math.floor(min + (1 + max - min)*Math.random());
 
-    	session.send("result is : " + num);
-    } else {
-   	 //respond with user's message
-    	session.send("You said " + session.message.text);
+	    	session.send("%s님, 랜덤값은 %d입니다.", session.userData.name, num);
+	    } else {
+	   	 //respond with user's message
+	    	session.send("%s님이 %s라고 하셨어요!", session.userData.name, session.message.text);
+		}
 	}
 });
+
+bot.add('/profile', [
+	function (session){
+		builder.Prompts.text(session, "반갑습니다! 뭐라고 불러드릴까요?");
+	},
+	function (session, result){
+		session.userData.name = result.response;
+		builder.Prompts.text(session, "안녕하세요, %s님!", result.response);
+		session.endDialog();
+	}
+]);
 
 // Setup Restify Server
 var server = restify.createServer();

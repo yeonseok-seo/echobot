@@ -11,7 +11,7 @@ var botConnectorOptions = {
 var bot = new builder.BotConnectorBot(botConnectorOptions);
 bot.add('/', function (session) {
     
-    if(session.message.text.indexOf("/roll") > -1){
+    if(session.message.text.indexOf("roll") > -1){
     	session.send("result is : " + random());
     } else {
    	 //respond with user's message

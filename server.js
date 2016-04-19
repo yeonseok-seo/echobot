@@ -2,6 +2,8 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var dialog = require('./dialogs/luisDialog');
 
+var request = require('request');
+
 // Get secrets from server environment
 var botConnectorOptions = { 
     appId: process.env.BOTFRAMEWORK_APPID, 
@@ -38,8 +40,31 @@ bot.add('/profile', [
 	}
 ]);
 
+
+//LUIS bot
 var luis = new builder.BotConnectorBot(botConnectorOptions);
 luis.add('/', dialog);
+
+
+//simsimi bot
+var simsimiApi = "http://api.simsimi.com/request.p?key=your_paid_key&lc=en&ft=1.0&text=";
+
+var simsimi = new builder.BotConnectorBot(botConnectorOptions);
+simsimi.add('/', function(session){
+	request({
+		url: simsimiApi + session.message.text,
+		json: true
+	}, function(error, response, body){
+		if (!error && response.statusCode == 200){
+			var result = JSON.parse(body);
+			session.send("%s", result.response);
+		} else {
+			session.send("!!!!!! 뭔가 잘못됐어!");
+		}
+	})
+});
+
+
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -47,6 +72,7 @@ var server = restify.createServer();
 // Handle Bot Framework messages
 server.post('/api/messages', bot.verifyBotFramework(), bot.listen());
 server.post('/api/luis', luis.verifyBotFramework(), luis.listen());
+server.post('/api/simsimi', simsimi.verifyBotFramework(), simsimi.listen());
 
 // Serve a static web page
 server.get(/.*/, restify.serveStatic({

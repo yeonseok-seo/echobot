@@ -4,6 +4,8 @@ var builder = require('botbuilder');
 var model = 'https://api.projectoxford.ai/luis/v1/application?id=c413b2ef-382c-45bd-8ff0-f76d60e2a821&subscription-key=c56a0aa53db7476b870b97d40107782f&q=';
 var dialog = new builder.LuisDialog(model);
 
+module.exports = dialog;
+
 // Add intent handlers
 dialog.on('builtin.intent.alarm.set_alarm', [
     function (session, args, next) {

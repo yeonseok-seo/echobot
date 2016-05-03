@@ -62,22 +62,23 @@ simsimi.add('/', function(session){
            { 'postman-token': 'b241d2e0-2ac5-8693-e634-55affd36e766',
              'cache-control': 'no-cache',
              'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
-          formData: { uuid: sessionIds.get(sender), os: '111', type: 'NA' } };
+          formData: { uuid: sessionIds.get(sender), os: '111', type: 'NA' } 
+      };
 
-        request(options, function (error, response, body) {
-          if (error) {
+    request(options, function (error, response, body) {
+        if (error) {
 			session.send("!!!!!! 뭔가 잘못됐어!");
-          } else if (isDefined(body)) {
-            let responseText = body.response;
+        } else if (isDefined(body)) {
+       		let responseText = body.response;
 
             console.log('==> body', body);
             console.log('==> FB_PAGE_ACCESS_TOKEN', FB_PAGE_ACCESS_TOKEN);
 
             // sendFBMessage(sender, {text: responseText});
             session.send("%s", responseText);
-          }
+        }
           // console.log(' ==> ', body);
-        });
+    };
 	// request({
 	// 	url: simsimiApi + session.message.text,
 	// 	json: true

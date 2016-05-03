@@ -47,13 +47,20 @@ luis.add('/', dialog);
 
 
 //simsimi bot
-var simsimiApi = "http://api.simsimi.com/request.p?key=your_paid_key&lc=ko&ft=1.0&text=";
+var simsimiApi = "http://api.simsimi.com/request.p";
 
 var simsimi = new builder.BotConnectorBot(botConnectorOptions);
 simsimi.add('/', function(session){
 	request({
 			method: 'GET',
-			url: simsimiApi + session.message.text.replace(" ", "%20"),
+			// url: simsimiApi + session.message.text.replace(" ", "%20"),
+			url: simsimiApi,
+			qs:{
+				key: 'your_paid_key',
+				lc: 'ko',
+				ft: '1.0',
+				text: session.message.text
+			},
 			json: true
 		}, function(error, response, body){
 		if (!error && response.statusCode == 200){

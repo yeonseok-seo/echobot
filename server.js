@@ -54,8 +54,8 @@ simsimi.add('/', function(session){
 	var options = { method: 'GET',
           url: 'http://api.simsimi.com/request.p',
           qs: 
-           { key: "your_paid_key",
-             lc: "en",
+           { key: 'your_paid_key',
+             lc: 'en',
              ft: '',
              text: session.message.text },
           headers: 
@@ -78,7 +78,7 @@ simsimi.add('/', function(session){
             session.send("%s", responseText);
         }
           // console.log(' ==> ', body);
-    };
+    });
 	// request({
 	// 	url: simsimiApi + session.message.text,
 	// 	json: true

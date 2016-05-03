@@ -51,39 +51,37 @@ var simsimiApi = "http://api.simsimi.com/request.p?key=your_paid_key&lc=en&ft=1.
 
 var simsimi = new builder.BotConnectorBot(botConnectorOptions);
 simsimi.add('/', function(session){
-	var options = { method: 'GET',
-          url: 'http://api.simsimi.com/request.p',
-          qs: 
-           { key: 'your_paid_key',
-             lc: 'en',
-             ft: '',
-             text: session.message.text }
-      };
+	// var options = { method: 'GET',
+ //          url: 'http://api.simsimi.com/request.p',
+ //          qs: 
+ //           { key: 'your_paid_key',
+ //             lc: 'en',
+ //             ft: '',
+ //             text: session.message.text }
+ //      };
 
-    request(options, function (error, response, body) {
-        if (error) {
-			session.send("!!!!!! 뭔가 잘못됐어!");
-        } else if (isDefined(body)) {
-       		let responseText = body.response;
-
-            console.log('==> body', body);
-
-            // sendFBMessage(sender, {text: responseText});
-            session.send("%s", responseText);
-        }
-          // console.log(' ==> ', body);
-    });
-	// request({
-	// 	url: simsimiApi + session.message.text,
-	// 	json: true
-	// }, function(error, response, body){
-	// 	if (!error && response.statusCode == 200){
-	// 		var result = JSON.parse(body);
-	// 		session.send("%s", result.response);
-	// 	} else {
+ //    request(options, function (error, response, body) {
+ //        if (error) {
 	// 		session.send("!!!!!! 뭔가 잘못됐어!");
-	// 	}
-	// });
+ //        } else if (isDefined(body)) {
+ //       		let responseText = body.response;
+
+ //            console.log('==> body', body);
+
+ //            // sendFBMessage(sender, {text: responseText});
+ //            session.send("%s", responseText);
+ //        }
+ //          // console.log(' ==> ', body);
+ //    });
+	request({
+			url: simsimiApi + session.message.text,
+		}, function(error, response, body){
+		if (!error && response.statusCode == 200){
+			session.send("%s", body.response);
+		} else {
+			session.send("!!!!!! 뭔가 잘못됐어!");
+		}
+	});
 });
 
 function isDefined(obj) {

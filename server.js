@@ -61,7 +61,7 @@ simsimi.add('/', function(session){
 		} else {
 			session.send("!!!!!! 뭔가 잘못됐어!");
 		}
-	})
+	});
 });
 
 

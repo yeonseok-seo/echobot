@@ -74,7 +74,7 @@ simsimi.add('/', function(session){
             console.log('==> FB_PAGE_ACCESS_TOKEN', FB_PAGE_ACCESS_TOKEN);
 
             // sendFBMessage(sender, {text: responseText});
-            session.send("$s", responseText);
+            session.send("%s", responseText);
           }
           // console.log(' ==> ', body);
         });

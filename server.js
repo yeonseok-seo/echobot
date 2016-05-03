@@ -78,7 +78,7 @@ simsimi.add('/', function(session){
 			url: simsimiApi + session.message.text
 		}, function(error, response, body){
 		if (!error && response.statusCode == 200){
-			session.send("%s", body);
+			session.send("%s", body.response);
 		} else {
 			session.send("뭔가 잘못됐어!");
 		}

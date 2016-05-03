@@ -57,12 +57,7 @@ simsimi.add('/', function(session){
            { key: 'your_paid_key',
              lc: 'en',
              ft: '',
-             text: session.message.text },
-          headers: 
-           { 'postman-token': 'b241d2e0-2ac5-8693-e634-55affd36e766',
-             'cache-control': 'no-cache',
-             'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
-          formData: { uuid: sessionIds.get(sender), os: '111', type: 'NA' } 
+             text: session.message.text }
       };
 
     request(options, function (error, response, body) {
@@ -72,7 +67,6 @@ simsimi.add('/', function(session){
        		let responseText = body.response;
 
             console.log('==> body', body);
-            console.log('==> FB_PAGE_ACCESS_TOKEN', FB_PAGE_ACCESS_TOKEN);
 
             // sendFBMessage(sender, {text: responseText});
             session.send("%s", responseText);
@@ -92,6 +86,15 @@ simsimi.add('/', function(session){
 	// });
 });
 
+function isDefined(obj) {
+    if (typeof obj == 'undefined') {
+        return false;
+    }
+    if (!obj) {
+        return false;
+    }
+    return obj != null;
+}
 
 
 // Setup Restify Server

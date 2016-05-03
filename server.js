@@ -47,32 +47,10 @@ luis.add('/', dialog);
 
 
 //simsimi bot
-var simsimiApi = "http://api.simsimi.com/request.p?key=your_paid_key&lc=en&ft=1.0&text=";
+var simsimiApi = "http://api.simsimi.com/request.p?key=your_paid_key&lc=ko&ft=1.0&text=";
 
 var simsimi = new builder.BotConnectorBot(botConnectorOptions);
 simsimi.add('/', function(session){
-	// var options = { method: 'GET',
- //          url: 'http://api.simsimi.com/request.p',
- //          qs: 
- //           { key: 'your_paid_key',
- //             lc: 'en',
- //             ft: '',
- //             text: session.message.text }
- //      };
-
- //    request(options, function (error, response, body) {
- //        if (error) {
-	// 		session.send("!!!!!! 뭔가 잘못됐어!");
- //        } else if (isDefined(body)) {
- //       		let responseText = body.response;
-
- //            console.log('==> body', body);
-
- //            // sendFBMessage(sender, {text: responseText});
- //            session.send("%s", responseText);
- //        }
- //          // console.log(' ==> ', body);
- //    });
 	request({
 			method: 'GET',
 			url: simsimiApi + session.message.text,
@@ -85,16 +63,6 @@ simsimi.add('/', function(session){
 		}
 	});
 });
-
-function isDefined(obj) {
-    if (typeof obj == 'undefined') {
-        return false;
-    }
-    if (!obj) {
-        return false;
-    }
-    return obj != null;
-}
 
 
 // Setup Restify Server

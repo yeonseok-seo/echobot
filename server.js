@@ -51,17 +51,44 @@ var simsimiApi = "http://api.simsimi.com/request.p?key=your_paid_key&lc=en&ft=1.
 
 var simsimi = new builder.BotConnectorBot(botConnectorOptions);
 simsimi.add('/', function(session){
-	request({
-		url: simsimiApi + session.message.text,
-		json: true
-	}, function(error, response, body){
-		if (!error && response.statusCode == 200){
-			var result = JSON.parse(body);
-			session.send("%s", result.response);
-		} else {
+	var options = { method: 'GET',
+          url: 'http://api.simsimi.com/request.p',
+          qs: 
+           { key: "your_paid_key",
+             lc: "en",
+             ft: '',
+             text: session.message.text },
+          headers: 
+           { 'postman-token': 'b241d2e0-2ac5-8693-e634-55affd36e766',
+             'cache-control': 'no-cache',
+             'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
+          formData: { uuid: sessionIds.get(sender), os: '111', type: 'NA' } };
+
+        request(options, function (error, response, body) {
+          if (error) {
 			session.send("!!!!!! 뭔가 잘못됐어!");
-		}
-	});
+          } else if (isDefined(body)) {
+            let responseText = body.response;
+
+            console.log('==> body', body);
+            console.log('==> FB_PAGE_ACCESS_TOKEN', FB_PAGE_ACCESS_TOKEN);
+
+            // sendFBMessage(sender, {text: responseText});
+            session.send("$s", responseText);
+          }
+          // console.log(' ==> ', body);
+        });
+	// request({
+	// 	url: simsimiApi + session.message.text,
+	// 	json: true
+	// }, function(error, response, body){
+	// 	if (!error && response.statusCode == 200){
+	// 		var result = JSON.parse(body);
+	// 		session.send("%s", result.response);
+	// 	} else {
+	// 		session.send("!!!!!! 뭔가 잘못됐어!");
+	// 	}
+	// });
 });
 
 

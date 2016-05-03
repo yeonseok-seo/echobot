@@ -53,7 +53,7 @@ var simsimi = new builder.BotConnectorBot(botConnectorOptions);
 simsimi.add('/', function(session){
 	request({
 			method: 'GET',
-			url: simsimiApi + session.message.text,
+			url: simsimiApi + session.message.text.replace(" ", "%20"),
 			json: true
 		}, function(error, response, body){
 		if (!error && response.statusCode == 200){

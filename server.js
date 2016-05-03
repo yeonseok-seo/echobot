@@ -75,7 +75,8 @@ simsimi.add('/', function(session){
  //    });
 	request({
 			method: 'GET',
-			url: simsimiApi + session.message.text
+			url: simsimiApi + session.message.text,
+			json: true
 		}, function(error, response, body){
 		if (!error && response.statusCode == 200){
 			session.send("%s", body.response);
